@@ -64,7 +64,19 @@
   <ItemGroup>
     <Compile Include="Api.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="Dto\Command.cs" />
+    <Compile Include="Dto\CommandState.cs" />
+    <Compile Include="Dto\Configuration.cs" />
+    <Compile Include="Dto\Developer.cs" />
+    <Compile Include="Dto\Group.cs" />
+    <Compile Include="Dto\GroupState.cs" />
+    <Compile Include="Dto\Light.cs" />
+    <Compile Include="Dto\LightState.cs" />
+    <Compile Include="Dto\PointSymbol.cs" />
+    <Compile Include="Dto\Schedule.cs" />
+    <Compile Include="Dto\SoftwareUpdate.cs" />
     <Compile Include="Dto\User.cs" />
+    <Compile Include="Dto\Whitelist.cs" />
     <Compile Include="Interaction.cs" />
     <Compile Include="Light.cs" />
     <Compile Include="Lights\Api.cs" />

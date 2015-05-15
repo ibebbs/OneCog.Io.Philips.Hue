@@ -19,5 +19,17 @@ namespace OneCog.Io.Philips.Hue.Dto
         {
             return Serializer.Json.Deserialize<State>(json);
         }
+
+        [JsonProperty("lights")]
+        public Light[] Lights { get; set; }
+
+        [JsonProperty("groups")]
+        public Group[] Groups { get; set; }
+
+        [JsonProperty("config")]
+        public Configuration Configuration { get; set; }
+
+        [JsonProperty("schedules")]
+        public Schedule[] Schedules { get; set; }
     }
 }
