@@ -70,6 +70,9 @@
     <Compile Include="Dto\Developer.cs" />
     <Compile Include="Dto\Group.cs" />
     <Compile Include="Dto\GroupState.cs" />
+    <Compile Include="Dto\Index.cs" />
+    <Compile Include="Dto\IndexConverter.cs" />
+    <Compile Include="Dto\Indexed.cs" />
     <Compile Include="Dto\Light.cs" />
     <Compile Include="Dto\LightState.cs" />
     <Compile Include="Dto\PointSymbol.cs" />

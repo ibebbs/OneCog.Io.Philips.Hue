@@ -21,15 +21,18 @@ namespace OneCog.Io.Philips.Hue.Dto
         }
 
         [JsonProperty("lights")]
-        public Light[] Lights { get; set; }
+        [JsonConverter(typeof(IndexConverter<Light>))]
+        public Index<Light> Lights { get; set; }
 
         [JsonProperty("groups")]
-        public Group[] Groups { get; set; }
+        [JsonConverter(typeof(IndexConverter<Group>))]
+        public Index<Group> Groups { get; set; }
 
         [JsonProperty("config")]
         public Configuration Configuration { get; set; }
 
         [JsonProperty("schedules")]
-        public Schedule[] Schedules { get; set; }
+        [JsonConverter(typeof(IndexConverter<Schedule>))]
+        public Index<Schedule> Schedules { get; set; }
     }
 }
