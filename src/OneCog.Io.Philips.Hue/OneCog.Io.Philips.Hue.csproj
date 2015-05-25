@@ -80,6 +80,8 @@
     <Compile Include="Dto\SoftwareUpdate.cs" />
     <Compile Include="Dto\User.cs" />
     <Compile Include="Dto\Whitelist.cs" />
+    <Compile Include="GroupConnect.cs" />
+    <Compile Include="Hub.cs" />
     <Compile Include="Interaction.cs" />
     <Compile Include="Light.cs" />
     <Compile Include="Lights\Api.cs" />

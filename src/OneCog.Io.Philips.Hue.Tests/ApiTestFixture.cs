@@ -49,7 +49,18 @@ namespace OneCog.Io.Philips.Hue.Tests
                         {
                             Func<IInteraction> pressLinkButton = () => A.Fake<IInteraction>();
 
-                            bool connected = await subject.Connect(pressLinkButton, CancellationToken.None);
+                            A.CallTo(
+                                () => client.Get(
+                                    A<Uri>.That.Matches(
+                                        uri => string.Equals(uri.OriginalString, "/api/{user}", StringComparison.InvariantCultureIgnoreCase)
+                                    ),
+                                    A<IReadOnlyDictionary<string, string>>.That.Matches(
+                                        dictionary => dictionary["user"] == UserName
+                                    )
+                                )
+                            ).Returns(Resources.ConfigurationResponse);
+
+                            Dto.IState state = await subject.Connect(pressLinkButton, CancellationToken.None);
 
                             A.CallTo(
                                 () => client.Get(
@@ -102,7 +113,7 @@ namespace OneCog.Io.Philips.Hue.Tests
 
                             A.CallTo(() => client.Post(A<Uri>.Ignored, A<string>.Ignored)).Invokes(() => userCreated = true).Returns(true);
 
-                            bool connected = await subject.Connect(pressLinkButton, CancellationToken.None);
+                            Dto.IState state = await subject.Connect(pressLinkButton, CancellationToken.None);
 
                             A.CallTo(() => interaction.Completion).MustHaveHappened(Repeated.Exactly.Once);
                         }
@@ -129,7 +140,7 @@ namespace OneCog.Io.Philips.Hue.Tests
                                 )
                             ).Returns("{ \"state\": \"test\" }");
 
-                            bool connected = await subject.Connect(pressLinkButton, CancellationToken.None);
+                            Dto.IState state = await subject.Connect(pressLinkButton, CancellationToken.None);
 
                             A.CallTo(() => interaction.Completion).MustNotHaveHappened();
                         }
@@ -178,7 +189,7 @@ namespace OneCog.Io.Philips.Hue.Tests
                                 )
                             ).Invokes(() => userCreated = true).Returns(true);
 
-                            bool connected = await subject.Connect(pressLinkButton, CancellationToken.None);
+                            Dto.IState state = await subject.Connect(pressLinkButton, CancellationToken.None);
 
                             A.CallTo(
                                 () => client.Post(

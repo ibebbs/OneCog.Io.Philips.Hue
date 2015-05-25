@@ -10,7 +10,13 @@ namespace OneCog.Io.Philips.Hue.Dto
 {
     public interface IState
     {
+        Index<Light> Lights { get; }
 
+        Index<Group> Groups { get; }
+
+        Configuration Configuration { get; }
+
+        Index<Schedule> Schedules { get; }
     }
 
     public class State : IState

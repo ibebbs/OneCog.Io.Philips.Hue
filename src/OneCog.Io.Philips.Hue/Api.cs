@@ -10,7 +10,14 @@ namespace OneCog.Io.Philips.Hue
 {
     public interface IApi
     {
-        Task<bool> Connect(Func<IInteraction> pressLinkButton, CancellationToken cancellationToken);
+        /// <summary>
+        /// Connects to the Hue hub
+        /// </summary>
+        /// <param name="pressLinkButton"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        /// <exception cref="CancellationRequestedException">If cancellation token is used to cancel the operation</exception>
+        Task<Dto.IState> Connect(Func<IInteraction> pressLinkButton, CancellationToken cancellationToken);
 
         Task<Dto.IState> GetState();
 
@@ -32,31 +39,6 @@ namespace OneCog.Io.Philips.Hue
             Lights = lights;
         }
 
-        public async Task<bool> Connect(Func<IInteraction> pressLinkButton, CancellationToken cancellationToken)
-        {
-            bool connected = false;
-
-            while (!connected && !cancellationToken.IsCancellationRequested)
-            {
-                try
-                {
-                    await GetState();
-                    connected = true;
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    // Do nothing
-                }
-
-                if (!connected)
-                {
-                    bool createdUser = await CreateUser(pressLinkButton);
-                }
-            }
-
-            return connected;
-        }
-
         private async Task<bool> CreateUser(Func<IInteraction> pressLinkButton)
         {
             IInteraction interaction = pressLinkButton();
@@ -70,6 +52,32 @@ namespace OneCog.Io.Philips.Hue
             bool result = await _client.Post(new Uri("/api", UriKind.Relative), content);
 
             return result;
+        }
+
+        public async Task<IState> Connect(Func<IInteraction> pressLinkButton, CancellationToken cancellationToken)
+        {
+            IState state = null;
+
+            while (state == null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                try
+                {
+                    state = await GetState();
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    // Do nothing
+                }
+
+                if (state == null)
+                {
+                    bool createdUser = await CreateUser(pressLinkButton);
+                }
+            }
+
+            return state;
         }
 
         public async Task<Dto.IState> GetState()

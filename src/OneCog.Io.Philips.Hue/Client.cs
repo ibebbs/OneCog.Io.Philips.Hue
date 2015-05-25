@@ -21,7 +21,7 @@ namespace OneCog.Io.Philips.Hue
     {
         private readonly RestSharp.RestClient _client;
 
-        public Client(Uri baseUri, string userName)
+        public Client(Uri baseUri)
         {
             _client = new RestSharp.RestClient(baseUri);
         }
