@@ -236,4 +236,11 @@
 	}
 }</value>
   </data>
+  <data name="SetLightResponse" xml:space="preserve">
+    <value>[
+	{"success":{"/lights/1/state/bri":200}},
+	{"success":{"/lights/1/state/on":true}},
+	{"success":{"/lights/1/state/hue":50000}}
+]</value>
+  </data>
 </root>

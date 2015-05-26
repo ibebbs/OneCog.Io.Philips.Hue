@@ -4,8 +4,6 @@ using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,12 +17,11 @@ namespace OneCog.Io.Philips.Hue.Tests
 
         private static Task RunTest(Func<IClient, Api, Task> test)
         {
-            Lights.IApi lights = A.Fake<Lights.IApi>();
             IClient client = A.Fake<IClient>();
             A.CallTo(() => client.Get(A<Uri>.Ignored)).Throws(new InvalidOperationException("Resource Not Found"));
             A.CallTo(() => client.Post(A<Uri>.Ignored, A<string>.Ignored)).Throws(new InvalidOperationException("Resource Not Found"));
 
-            Api subject = new Api(lights, client, UserName, DeviceType);
+            Api subject = new Api(client, UserName, DeviceType);
 
             return test(client, subject);
         }

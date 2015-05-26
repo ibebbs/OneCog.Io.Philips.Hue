@@ -1,10 +1,7 @@
 ﻿using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OneCog.Io.Philips.Hue
@@ -15,6 +12,9 @@ namespace OneCog.Io.Philips.Hue
         Task<string> Get(Uri resource, IReadOnlyDictionary<string, string> urlSegments);
 
         Task<bool> Post(Uri resource, string content);
+
+        Task<string> Put(Uri resource, string content);
+        Task<string> Put(Uri resource, IReadOnlyDictionary<string, string> urlSegments, string content);
     }
 
     public class Client : IClient
@@ -26,6 +26,18 @@ namespace OneCog.Io.Philips.Hue
             _client = new RestSharp.RestClient(baseUri);
         }
 
+        private RestRequest BuildRequest(Uri resource, Method method, IReadOnlyDictionary<string, string> uriSegments)
+        {
+            RestRequest request = new RestRequest(resource, method);
+
+            foreach (KeyValuePair<string, string> kvp in uriSegments)
+            {
+                request.AddUrlSegment(kvp.Key, kvp.Value);
+            }
+
+            return request;
+        }
+
         public Task<string> Get(Uri resource)
         {
             return Get(resource, new Dictionary<string, string>());
@@ -33,7 +45,7 @@ namespace OneCog.Io.Philips.Hue
 
         public async Task<string> Get(Uri resource, IReadOnlyDictionary<string, string> urlSegments)
         {
-            var request = new RestRequest(resource, Method.GET);
+            var request = BuildRequest(resource, Method.GET, urlSegments);
 
             var response = await _client.ExecuteGetTaskAsync(request);
 
@@ -49,7 +61,7 @@ namespace OneCog.Io.Philips.Hue
 
         public async Task<bool> Post(Uri resource, string content)
         {
-            var request = new RestRequest(resource, Method.PUT);
+            var request = BuildRequest(resource, Method.POST, new Dictionary<string, string>());
             request.AddBody(content);
 
             var response = await _client.ExecutePostTaskAsync(request);
@@ -57,21 +69,26 @@ namespace OneCog.Io.Philips.Hue
             return response.StatusCode == HttpStatusCode.OK;
         }
 
-        public async Task<bool> Put(Uri resource, string content)
+        public async Task<string> Put(Uri resource, IReadOnlyDictionary<string, string> urlSegments, string content)
         {
-            var request = new RestRequest(resource, Method.PUT);
+            var request = BuildRequest(resource, Method.PUT, urlSegments);
             request.AddBody(content);
 
             var response = await _client.ExecuteTaskAsync(request);
 
             if (response.ResponseStatus == ResponseStatus.Completed && response.StatusCode == HttpStatusCode.OK)
             {
-                return true;
+                return response.Content;
             }
             else
             {
                 throw response.ErrorException;
             }
+        }
+
+        public Task<string> Put(Uri resource, string content)
+        {
+            return Put(resource, new Dictionary<string, string>(), content);
         }
     }
 }

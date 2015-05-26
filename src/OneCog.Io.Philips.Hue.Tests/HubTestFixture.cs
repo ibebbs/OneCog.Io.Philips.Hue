@@ -37,7 +37,7 @@ namespace OneCog.Io.Philips.Hue.Tests
 
                     await hub.Connect(CancellationToken.None);
 
-                    List<ILight> actual = new List<ILight>();
+                    List<Light.ISource> actual = new List<Light.ISource>();
                     
                     hub.Lighting.Subscribe(actual.Add);
 

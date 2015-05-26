@@ -47,5 +47,18 @@ namespace OneCog.Io.Philips.Hue.Tests
             Assert.That(light.ModelId, Is.EqualTo("LCT001"));
             Assert.That(light.FirmwareVersion, Is.EqualTo("65003148"));
         }
+
+        [Test]
+        public void CanDeserializeStateChangeResponse()
+        {
+            StateChangeResponse response = Serializer.Json.Deserialize<StateChangeResponse>(Resources.SetLightResponse);
+
+            Assert.That(response, Is.Not.Null);
+            Assert.That(response.Changes, Is.Not.Null);
+            Assert.That(response.Changes.Length, Is.EqualTo(3));
+            Assert.That(response.Changes[0].Success, Is.True);
+            Assert.That(response.Changes[0].Key, Is.EqualTo("/lights/1/state/bri"));
+            Assert.That(response.Changes[0].Value, Is.EqualTo(200));
+        }
     }
 }

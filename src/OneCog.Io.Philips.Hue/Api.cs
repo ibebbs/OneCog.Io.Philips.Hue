@@ -19,9 +19,18 @@ namespace OneCog.Io.Philips.Hue
         /// <exception cref="CancellationRequestedException">If cancellation token is used to cancel the operation</exception>
         Task<Dto.IState> Connect(Func<IInteraction> pressLinkButton, CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Gets the current <see cref="Dto.IState"/> 
+        /// </summary>
+        /// <returns></returns>
         Task<Dto.IState> GetState();
 
-        Lights.IApi Lights { get; }
+        /// <summary>
+        /// Sets the state of the <see cref="Light.Source"/>
+        /// </summary>
+        /// <param name="light"></param>
+        /// <returns></returns>
+        Task<Light.ISource> Set(Light.ISource light);
     }
 
     public class Api : IApi
@@ -30,13 +39,11 @@ namespace OneCog.Io.Philips.Hue
         private readonly string _user;
         private readonly string _deviceType;
 
-        public Api(Lights.IApi lights, IClient client, string user, string deviceType)
+        public Api(IClient client, string user, string deviceType)
         {
             _client = client;
             _user = user;
             _deviceType = deviceType;
-
-            Lights = lights;
         }
 
         private async Task<bool> CreateUser(Func<IInteraction> pressLinkButton)
@@ -87,6 +94,22 @@ namespace OneCog.Io.Philips.Hue
             return Dto.State.FromJson(result);
         }
 
-        public Lights.IApi Lights { get; private set; }
+        public async Task<Light.ISource> Set(Light.ISource light)
+        {
+            var converter = new Colourful.Conversion.ColourfulConverter();
+            var color = converter.ToxyY(light.Color);
+
+            Dto.LightState state = new Dto.LightState();
+            string content = Serializer.Json.Serializer(state);
+
+            var result = await _client.Put(
+                new Uri("/api/<username>/lights/<id>/state", UriKind.Relative),
+                new Dictionary<string, string> { { "username", _user }, { "id", light.Id.ToString() } },
+                content
+            );
+
+            // TODO: Return new instance of light modified with the successful state changes
+            return light;
+        }
     }
 }

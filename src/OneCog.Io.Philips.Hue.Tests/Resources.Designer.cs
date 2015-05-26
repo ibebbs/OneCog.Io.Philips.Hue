@@ -95,5 +95,18 @@ namespace OneCog.Io.Philips.Hue.Tests {
                 return ResourceManager.GetString("ConfigurationResponse", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [
+        ///	{&quot;success&quot;:{&quot;/lights/1/state/bri&quot;:200}},
+        ///	{&quot;success&quot;:{&quot;/lights/1/state/on&quot;:true}},
+        ///	{&quot;success&quot;:{&quot;/lights/1/state/hue&quot;:50000}}
+        ///].
+        /// </summary>
+        internal static string SetLightResponse {
+            get {
+                return ResourceManager.GetString("SetLightResponse", resourceCulture);
+            }
+        }
     }
 }

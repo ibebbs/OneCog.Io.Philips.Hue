@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Colourful;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
@@ -16,8 +17,8 @@ namespace OneCog.Io.Philips.Hue
         private readonly IApi _api;
         private readonly Func<IInteraction> _pressLinkButton;
 
-        private readonly Subject<ILight> _lighting;
-        private readonly IConnectableObservable<ILight> _lightingObservable;
+        private readonly Subject<Light.ISource> _lighting;
+        private readonly IConnectableObservable<Light.ISource> _lightingObservable;
         private IDisposable _lightingSubscription;
 
         public Hub(IApi api, Func<IInteraction> pressLinkButton)
@@ -25,12 +26,15 @@ namespace OneCog.Io.Philips.Hue
             _api = api;
             _pressLinkButton = pressLinkButton;
 
-            _lighting = new Subject<ILight>();
+            _lighting = new Subject<Light.ISource>();
             _lightingObservable = _lighting.GroupLatest(light => light.Id);
         }
 
+        public Hub(IClient client, string userName, string deviceType, Func<IInteraction> pressLinkButton)
+            : this(new Api(client, userName, deviceType), pressLinkButton) { }
+
         public Hub(Uri hubAddress, string userName, string deviceType, Func<IInteraction> pressLinkButton)
-            : this(new Api(new Lights.Api(), new Client(hubAddress), userName, deviceType), pressLinkButton)
+            : this(new Client(hubAddress), userName, deviceType, pressLinkButton)
         {
         }
 
@@ -50,22 +54,22 @@ namespace OneCog.Io.Philips.Hue
             Dto.IState state = await _api.Connect(_pressLinkButton, cancellationToken);
 
             var lights = state.Lights
-                .Select(indexedLight => new Light { Id = (uint)indexedLight.Index, Color = Colourful.RGBColor.FromRGB8bit(0, 0, 0) });
+                .Select(indexedLight => new Light.Bulb { Id = (uint)indexedLight.Index, Color = Colourful.RGBColor.FromRGB8bit(0, 0, 0) });
 
-            foreach (ILight light in lights)
+            foreach (Light.ISource light in lights)
             {
                 _lighting.OnNext(light);
             }
         }
 
-        public Task SetLight(ILight light)
+        public Task SetLight(uint index, IColorVector color)
         {
-            _lighting.OnNext(light);
+            _lighting.OnNext(new Light.Bulb { Id = index, Color = color });
 
             return Task.FromResult<object>(null);
         }
 
-        public IObservable<ILight> Lighting
+        public IObservable<Light.ISource> Lighting
         {
             get { return _lightingObservable; }
         }
