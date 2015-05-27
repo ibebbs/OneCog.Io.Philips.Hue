@@ -17,10 +17,10 @@ namespace OneCog.Io.Philips.Hue.Dto
         public int Saturation { get; set; }
 
         [JsonProperty("xy")]
-        public float[] Xy { get; set; }
+        public double[] Xy { get; set; }
 
         [JsonProperty("ct")]
-        public int Ct { get; set; }
+        public int ColorTemperature { get; set; }
 
         [JsonProperty("alert")]
         public string Alert { get; set; }

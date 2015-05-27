@@ -96,10 +96,8 @@ namespace OneCog.Io.Philips.Hue
 
         public async Task<Light.ISource> Set(Light.ISource light)
         {
-            var converter = new Colourful.Conversion.ColourfulConverter();
-            var color = converter.ToxyY(light.Color);
+            var state = light.Color.ToLightState();
 
-            Dto.LightState state = new Dto.LightState();
             string content = Serializer.Json.Serializer(state);
 
             var result = await _client.Put(

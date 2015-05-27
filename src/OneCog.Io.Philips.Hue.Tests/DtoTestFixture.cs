@@ -35,8 +35,8 @@ namespace OneCog.Io.Philips.Hue.Tests
             Assert.That(light.State.Brightness, Is.EqualTo(254));
             Assert.That(light.State.Hue, Is.EqualTo(33536));
             Assert.That(light.State.Saturation, Is.EqualTo(144));
-            Assert.That(light.State.Xy, Is.EqualTo(new float[] { 0.3460F, 0.3568F }));
-            Assert.That(light.State.Ct, Is.EqualTo(201));
+            Assert.That(light.State.Xy, Is.EqualTo(new double[] { 0.3460, 0.3568 }));
+            Assert.That(light.State.ColorTemperature, Is.EqualTo(201));
             Assert.That(light.State.Alert, Is.EqualTo("none"));
             Assert.That(light.State.Effect, Is.EqualTo("none"));
             Assert.That(light.State.ColorMode, Is.EqualTo("hs"));

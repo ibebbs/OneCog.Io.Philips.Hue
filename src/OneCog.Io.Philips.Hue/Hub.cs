@@ -1,5 +1,6 @@
 ﻿using Colourful;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
@@ -19,12 +20,17 @@ namespace OneCog.Io.Philips.Hue
 
         private readonly Subject<Light.ISource> _lighting;
         private readonly IConnectableObservable<Light.ISource> _lightingObservable;
+
+        private readonly ConcurrentDictionary<uint, Light.ISource> _lights;
+
         private IDisposable _lightingSubscription;
 
         public Hub(IApi api, Func<IInteraction> pressLinkButton)
         {
             _api = api;
             _pressLinkButton = pressLinkButton;
+
+            _lights = new ConcurrentDictionary<uint, Light.ISource>();
 
             _lighting = new Subject<Light.ISource>();
             _lightingObservable = _lighting.GroupLatest(light => light.Id);
@@ -49,17 +55,16 @@ namespace OneCog.Io.Philips.Hue
         
         public async Task Connect(CancellationToken cancellationToken)
         {
-            _lightingSubscription = _lightingObservable.Connect();
+            _lightingSubscription = new CompositeDisposable(
+                _lightingObservable.Subscribe(light => _lights.AddOrUpdate(light.Id, light, (key, lo) => light)),
+                _lightingObservable.Connect()
+            );
 
             Dto.IState state = await _api.Connect(_pressLinkButton, cancellationToken);
 
-            var lights = state.Lights
-                .Select(indexedLight => new Light.Bulb { Id = (uint)indexedLight.Index, Color = Colourful.RGBColor.FromRGB8bit(0, 0, 0) });
-
-            foreach (Light.ISource light in lights)
-            {
-                _lighting.OnNext(light);
-            }
+            state.Lights
+                .Select(indexedLight => indexedLight.AsLightSource())
+                .ForEach(_lighting.OnNext);
         }
 
         public Task SetLight(uint index, IColorVector color)

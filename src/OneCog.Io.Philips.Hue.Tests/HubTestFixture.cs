@@ -25,9 +25,9 @@ namespace OneCog.Io.Philips.Hue.Tests
                         {
                             Lights = new Dto.Index<Dto.Light>(
                                 new Dto.Indexed<Dto.Light>[] { 
-                                    new Dto.Indexed<Dto.Light> { Index = 1, Item = new Dto.Light { Name = "Item1", State = new Dto.LightState { On = true, Hue = 255 }}},
-                                    new Dto.Indexed<Dto.Light> { Index = 2, Item = new Dto.Light { Name = "Item2", State = new Dto.LightState { On = true, Hue = 128 }}},
-                                    new Dto.Indexed<Dto.Light> { Index = 3, Item = new Dto.Light { Name = "Item3", State = new Dto.LightState { On = true, Hue = 64 }}}
+                                    new Dto.Indexed<Dto.Light> { Index = 1, Item = new Dto.Light { Name = "Item1", State = new Dto.LightState { On = true, ColorMode = "xy", Xy = new [] { 0.3972, 0.4564 } } } },
+                                    new Dto.Indexed<Dto.Light> { Index = 2, Item = new Dto.Light { Name = "Item2", State = new Dto.LightState { On = true, ColorMode = "xy", Xy = new [] { 0.5425, 0.4196 } } } },
+                                    new Dto.Indexed<Dto.Light> { Index = 3, Item = new Dto.Light { Name = "Item3", State = new Dto.LightState { On = true, ColorMode = "xy", Xy = new [] { 0.41, 0.51721 } } } }
                                 }  
                             )
                         }

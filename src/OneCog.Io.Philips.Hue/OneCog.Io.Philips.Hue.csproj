@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Api.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="ColourfulExtensions.cs" />
     <Compile Include="Dto\Command.cs" />
     <Compile Include="Dto\CommandState.cs" />
     <Compile Include="Dto\Configuration.cs" />
@@ -82,12 +83,12 @@
     <Compile Include="Dto\StateChangeResponseConverter.cs" />
     <Compile Include="Dto\User.cs" />
     <Compile Include="Dto\Whitelist.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="GroupConnect.cs" />
     <Compile Include="Hub.cs" />
     <Compile Include="Interaction.cs" />
-    <Compile Include="Light.cs" />
+    <Compile Include="LightExtensions.cs" />
     <Compile Include="Light\Bulb.cs" />
-    <Compile Include="Light\Factory.cs" />
     <Compile Include="Light\Ribbon.cs" />
     <Compile Include="Light\Source.cs" />
     <Compile Include="Reactive.cs" />
