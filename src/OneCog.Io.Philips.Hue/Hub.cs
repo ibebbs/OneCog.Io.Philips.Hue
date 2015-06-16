@@ -19,6 +19,7 @@ namespace OneCog.Io.Philips.Hue
         private readonly Func<IInteraction> _pressLinkButton;
 
         private readonly Subject<Light.ISource> _lighting;
+        private readonly LightController _lightController;
         private readonly IConnectableObservable<Light.ISource> _lightingObservable;
 
         private readonly ConcurrentDictionary<uint, Light.ISource> _lights;
@@ -31,7 +32,8 @@ namespace OneCog.Io.Philips.Hue
             _pressLinkButton = pressLinkButton;
 
             _lights = new ConcurrentDictionary<uint, Light.ISource>();
-
+            _lightController = new LightController();
+            
             _lighting = new Subject<Light.ISource>();
             _lightingObservable = _lighting.GroupLatest(light => light.Id);
         }
@@ -40,9 +42,7 @@ namespace OneCog.Io.Philips.Hue
             : this(new Api(client, userName, deviceType), pressLinkButton) { }
 
         public Hub(Uri hubAddress, string userName, string deviceType, Func<IInteraction> pressLinkButton)
-            : this(new Client(hubAddress), userName, deviceType, pressLinkButton)
-        {
-        }
+            : this(new Client(hubAddress), userName, deviceType, pressLinkButton) { }
 
         public void Dispose()
         {
@@ -52,11 +52,18 @@ namespace OneCog.Io.Philips.Hue
                 _lightingSubscription = null;
             }
         }
+
+        private void UpdateLight(Light.ISource output)
+        {
+            // Update light
+        }
         
         public async Task Connect(CancellationToken cancellationToken)
         {
             _lightingSubscription = new CompositeDisposable(
                 _lightingObservable.Subscribe(light => _lights.AddOrUpdate(light.Id, light, (key, lo) => light)),
+                _lightingObservable.Subscribe(_lightController),
+                _lightController.Subscribe(UpdateLight),
                 _lightingObservable.Connect()
             );
 

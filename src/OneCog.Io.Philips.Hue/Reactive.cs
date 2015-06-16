@@ -42,5 +42,17 @@ namespace OneCog.Io.Philips.Hue
         {
             return new Grouped<TKey, TItem>(source, keySelector);
         }
+
+        public static IObservable<IReadOnlyDictionary<uint, Light.ISource>> ByIndex(this IObservable<Light.ISource> source)
+        {
+            return source.Scan(
+                new Dictionary<uint, Light.ISource>(),
+                (grouped, light) =>
+                {
+                    grouped[light.Id] = light;
+                    return grouped;
+                }
+            );
+        }
     }
 }

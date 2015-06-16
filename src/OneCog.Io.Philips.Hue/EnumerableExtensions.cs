@@ -12,5 +12,13 @@ namespace OneCog.Io.Philips.Hue
                 action(item);
             }
         }
+
+        public static T FirstOrValue<T>(this IEnumerable<T> source, T value)
+        {
+            using (IEnumerator<T> enumerator = source.GetEnumerator())
+            {
+                return enumerator.MoveNext() ? enumerator.Current : value;
+            }
+        }
     }
 }
