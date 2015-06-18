@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiTestFixture.cs" />
+    <Compile Include="EnumerableAssert.cs" />
     <Compile Include="LightComparer.cs" />
     <Compile Include="DtoTestFixture.cs" />
     <Compile Include="HubTestFixture.cs" />

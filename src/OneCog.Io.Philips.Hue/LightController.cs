@@ -52,7 +52,7 @@ namespace OneCog.Io.Philips.Hue
                 .GroupJoin(desired, current, item => item.Key, item => item.Key, GetLightValues)
                 .Select(tuple => GetDifferences(tuple.Item1, tuple.Item2))
                 .Where(tuple => tuple.Item3 != 0.0)
-                .OrderBy(tuple => Math.Abs(tuple.Item3));
+                .OrderByDescending(tuple => Math.Abs(tuple.Item3));
         }
 
         public IDisposable Connect(IEnumerable<Light.ISource> initialState)
@@ -61,7 +61,7 @@ namespace OneCog.Io.Philips.Hue
                 .CombineLatest(_input.ByIndex(), _output.ByIndex().StartWith(initialState.ToDictionary(light => light.Id)), GetDifferences)
                 .SelectMany(differences => differences.Select(tuple => tuple.Item1).Take(1))
                 .Sample(TimeSpan.FromMilliseconds(10), _scheduler)
-                .Subscribe(_output);
+                .Subscribe(value => _output.OnNext(value));
         }
 
         public void OnCompleted()
