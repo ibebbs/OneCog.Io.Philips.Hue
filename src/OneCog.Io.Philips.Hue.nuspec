@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+    <metadata>
+      <id>OneCog.Io.Philips.Hue</id>
+      <version>@build.number@</version>
+      <authors>@authors@</authors>
+      <owners>@authors@</owners>
+      <summary>@summary@</summary>
+      <licenseUrl>https://github.com/ibebbs/OneCog.Io.Philips.Hue/blob/master/LICENSE</licenseUrl>
+      <projectUrl>https://github.com/ibebbs/OneCog.Io.Philips.Hue</projectUrl>
+      <!--iconUrl>https://raw.githubusercontent.com/tompazourek/Colourful/master/assets/logo_64.png</iconUrl-->
+      <requireLicenseAcceptance>false</requireLicenseAcceptance>
+      <description>@description@</description>
+      <releaseNotes>@releaseNotes@</releaseNotes>
+      @dependencies@
+      @references@
+    </metadata>
+    @files@
+</package>

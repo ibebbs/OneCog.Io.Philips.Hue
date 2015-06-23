@@ -7,6 +7,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneCog.Io.Philips.Hue", "On
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneCog.Io.Philips.Hue.Tests", "OneCog.Io.Philips.Hue.Tests\OneCog.Io.Philips.Hue.Tests.csproj", "{4A198301-6A92-415F-B76A-6587A6DE08A3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{6554E1E9-791A-4FDC-B698-BEB1BEE62CA2}"
+	ProjectSection(SolutionItems) = preProject
+		..\build.fsx = ..\build.fsx
+		OneCog.Io.Philips.Hue.nuspec = OneCog.Io.Philips.Hue.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{370CECD6-53D3-402E-8916-39F2BAF0F5E1}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
