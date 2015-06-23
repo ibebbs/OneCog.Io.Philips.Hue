@@ -30,12 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Colourful, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Colourful, Version=1.1.0.58, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Colourful.1.0.1.14\lib\net45\Colourful.dll</HintPath>
-    </Reference>
-    <Reference Include="Colourful.Net45">
-      <HintPath>..\packages\Colourful.1.0.1.14\lib\net45\Colourful.Net45.dll</HintPath>
+      <HintPath>..\packages\Colourful.1.1.0\lib\net45\Colourful.dll</HintPath>
     </Reference>
     <Reference Include="FakeItEasy">
       <HintPath>..\packages\FakeItEasy.1.25.2\lib\net40\FakeItEasy.dll</HintPath>
